@@ -1,0 +1,709 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f7f0e6">
+<title>For Shivani Ma'am — A Little Adventure</title>
+<style>
+:root{
+  --paper:#f7f0e6; --paper2:#eee3d3; --cream:#fffaf3;
+  --ink:#302a28; --muted:#756c65; --line:#d9cabb;
+  --rose:#a94d5d; --rose-dark:#863d4a; --rose-soft:#e7b4b8;
+  --green:#71826c; --shadow:0 18px 55px rgba(65,45,35,.12);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; min-height:100vh; color:var(--ink);
+  font-family:Arial,Helvetica,sans-serif;
+  background:
+    radial-gradient(circle at 20% 15%,rgba(255,255,255,.72),transparent 28%),
+    radial-gradient(circle at 85% 80%,rgba(225,202,178,.28),transparent 32%),
+    var(--paper);
+}
+button{font:inherit}
+button:focus-visible{outline:3px solid rgba(169,77,93,.35);outline-offset:4px}
+.site{
+  min-height:100vh; position:relative; overflow:hidden;
+}
+.site:before{
+  content:""; position:fixed; inset:0; pointer-events:none; opacity:.22; z-index:0;
+  background-image:
+    repeating-linear-gradient(0deg,rgba(80,55,40,.035) 0 1px,transparent 1px 4px);
+  mix-blend-mode:multiply;
+}
+.flower{
+  position:fixed; width:115px;height:115px; opacity:.78; z-index:1; pointer-events:none;
+}
+.flower.tl{top:28px;left:22px;transform:rotate(-18deg)}
+.flower.br{right:28px;bottom:24px;transform:rotate(20deg) scale(.82)}
+.flower .petal{
+  position:absolute; width:28px;height:46px;border-radius:70% 70% 50% 50%;
+  background:linear-gradient(145deg,#e8a6ad,#b85d6b);
+  left:43px;top:34px;transform-origin:14px 25px;
+  box-shadow:0 3px 7px rgba(120,50,60,.1);
+}
+.flower .p2{transform:rotate(45deg)} .flower .p3{transform:rotate(90deg)}
+.flower .p4{transform:rotate(135deg)} .flower .p5{transform:rotate(180deg)}
+.flower .p6{transform:rotate(225deg)} .flower .p7{transform:rotate(270deg)}
+.flower .p8{transform:rotate(315deg)}
+.flower .center{position:absolute;left:49px;top:50px;width:18px;height:18px;border-radius:50%;background:#e4c77e}
+.wrap{position:relative;z-index:2;min-height:100vh;display:grid;place-items:center;padding:32px 20px}
+.screen{
+  width:min(900px,100%); min-height:min(690px,calc(100vh - 64px));
+  display:none; position:relative; padding:clamp(28px,6vw,72px);
+  background:rgba(255,250,243,.88); border:1px solid var(--line);
+  box-shadow:var(--shadow); border-radius:10px;
+}
+.screen.active{display:flex;flex-direction:column;justify-content:center;animation:appear .55s ease both}
+@keyframes appear{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.kicker{
+  font-size:11px; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--rose); font-weight:700; margin-bottom:18px;
+}
+h1,h2{margin:0 0 22px;line-height:1.05;letter-spacing:-.035em}
+h1{font-size:clamp(42px,7vw,76px);max-width:760px}
+h2{font-size:clamp(34px,5vw,56px)}
+p{font-size:clamp(16px,2vw,19px);line-height:1.7;max-width:650px;color:#514944;margin:0 0 18px}
+.small{font-size:14px;color:var(--muted);line-height:1.6}
+.script{font-family:"Brush Script MT","Segoe Print",cursive;font-size:clamp(24px,4vw,38px);font-weight:500;color:var(--rose)}
+.note{
+  margin:28px 0; padding:22px 24px; max-width:600px; background:#fffdf8;
+  border:1px solid #ded2c4; box-shadow:4px 7px 0 rgba(201,181,161,.25);
+  transform:rotate(-.7deg);
+}
+.memory{
+  display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:650px;margin:28px 0;
+}
+.memory .ticket{
+  background:#f4e9da;border:1px dashed #cdbba7;padding:24px;text-align:center;
+}
+.ticket strong{display:block;font-size:19px;margin-top:8px}.ticket span{font-size:12px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
+.btn{
+  border:1px solid #c8b8a8;background:#fffaf3;color:var(--ink);padding:13px 18px;
+  border-radius:7px;cursor:pointer;transition:transform .2s,background .2s,border-color .2s;
+  box-shadow:0 3px 0 rgba(150,120,100,.08);
+}
+.btn:hover{transform:translateY(-2px);background:#fff;border-color:#bda895}
+.btn.primary{background:var(--rose);border-color:var(--rose);color:#fff}
+.btn.primary:hover{background:var(--rose-dark)}
+.btn.soft{background:#f0e5d9}
+.question{text-align:center;align-items:center}
+.question p{max-width:600px}
+.gys{
+  display:inline-block;color:var(--rose);font-size:clamp(15px,2vw,19px);
+  border:1px solid var(--rose-soft);padding:8px 14px;border-radius:999px;background:#fff7f3;margin-bottom:24px;
+}
+.answer-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:18px}
+.envelope-area{height:210px;display:grid;place-items:center;margin-bottom:8px}
+.envelope{
+  width:230px;height:145px;background:#6f284b;border-radius:8px;position:relative;
+  box-shadow:0 18px 35px rgba(80,35,55,.18);cursor:pointer;
+}
+.envelope:before{
+  content:"";position:absolute;inset:0;background:#8c3b60;clip-path:polygon(0 0,50% 58%,100% 0,100% 100%,0 100%);
+  border-radius:8px;
+}
+.envelope:after{
+  content:"OPEN ME";position:absolute;left:50%;top:57%;transform:translate(-50%,-50%);
+  background:#fffaf3;color:#6f284b;border-radius:4px;padding:8px 15px;font-size:11px;letter-spacing:.12em;font-weight:700;
+}
+.envelope:hover{transform:translateY(-4px) rotate(-1deg)}
+.celebrate{text-align:center;align-items:center}
+.heart{font-size:62px;line-height:1;margin:8px 0 20px;animation:heart .9s ease both}
+@keyframes heart{0%{transform:scale(.65);opacity:.2}70%{transform:scale(1.08)}100%{transform:scale(1)}}
+.flower-row{display:flex;gap:9px;justify-content:center;margin:18px 0 24px}
+.mini-flower{width:27px;height:27px;border-radius:50%;background:#d9828c;position:relative;box-shadow:inset 0 0 0 6px #f1c4c7}
+.mini-flower:after{content:"";position:absolute;width:7px;height:7px;background:#d7b66c;border-radius:50%;left:10px;top:10px}
+.footer-note{margin-top:auto;padding-top:34px;font-size:13px;color:#81766e}
+.topmark{
+  position:absolute;top:24px;left:28px;color:var(--rose);font-size:13px;
+  letter-spacing:.12em;font-weight:700;text-transform:uppercase;
+}
+.corner{
+  position:absolute;right:28px;top:25px;font-size:22px;color:#c58a91;transform:rotate(8deg)
+}
+.back{margin-top:18px;background:transparent;border:0;color:var(--muted);padding:7px 0;cursor:pointer}
+
+/* ===== scrapbook animation layer ===== */
+body::after{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:20;opacity:.13;
+  background-image:radial-gradient(rgba(74,48,35,.22) .7px,transparent .7px);
+  background-size:5px 5px;
+}
+.screen{
+  will-change:transform,opacity;
+  overflow:hidden;
+}
+.screen::before{
+  content:"";position:absolute;width:90px;height:20px;top:20px;right:42px;
+  background:rgba(221,194,164,.48);transform:rotate(3deg);opacity:.65;
+}
+.screen::after{
+  content:"";position:absolute;width:55px;height:12px;bottom:25px;left:38px;
+  background:rgba(221,194,164,.34);transform:rotate(-7deg);
+}
+.screen.active{
+  animation:pageIn .72s cubic-bezier(.22,.75,.22,1) both;
+}
+@keyframes pageIn{
+  0%{opacity:0;transform:translateY(30px) rotate(.8deg) scale(.985)}
+  55%{opacity:1}
+  100%{opacity:1;transform:translateY(0) rotate(0) scale(1)}
+}
+.screen.leaving{
+  animation:pageOut .28s ease both;
+}
+@keyframes pageOut{
+  to{opacity:0;transform:translateY(-12px) rotate(-.4deg) scale(.99)}
+}
+.kicker{animation:fadeUp .7s .08s both}
+h1,h2{animation:fadeUp .72s .13s both}
+p,.note,.memory,.actions,.footer-note,.gys,.heart,.flower-row,.envelope-area{
+  animation:fadeUp .72s .22s both;
+}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(14px)}
+  to{opacity:1;transform:none}
+}
+.note{
+  position:relative;
+  transition:transform .35s ease,box-shadow .35s ease;
+}
+.note:hover{transform:rotate(-.7deg) translateY(-4px);box-shadow:7px 12px 0 rgba(201,181,161,.22)}
+.note::before{
+  content:"";position:absolute;left:50%;top:-10px;width:70px;height:18px;
+  transform:translateX(-50%) rotate(-2deg);
+  background:rgba(227,203,177,.52);
+}
+.ticket{transition:transform .35s ease,box-shadow .35s ease}
+.ticket:first-child:hover{transform:rotate(-2deg) translateY(-5px);box-shadow:0 10px 20px rgba(80,55,40,.08)}
+.ticket:last-child:hover{transform:rotate(2deg) translateY(-5px);box-shadow:0 10px 20px rgba(80,55,40,.08)}
+.btn{position:relative;overflow:hidden}
+.btn::after{
+  content:"";position:absolute;left:-100%;top:0;width:55%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);
+  transform:skewX(-18deg);transition:left .55s ease;
+}
+.btn:hover::after{left:140%}
+.btn:active{transform:translateY(1px) scale(.98)}
+.answer-grid .primary{animation:softPulse 2.6s ease-in-out 1.2s infinite}
+@keyframes softPulse{
+  0%,100%{box-shadow:0 3px 0 rgba(150,120,100,.08)}
+  50%{box-shadow:0 7px 22px rgba(169,77,93,.18)}
+}
+.flower{animation:sway 5s ease-in-out infinite}
+.flower.br{animation-delay:-2.2s}
+@keyframes sway{
+  0%,100%{margin-top:0;transform:rotate(-18deg)}
+  50%{margin-top:7px;transform:rotate(-13deg)}
+}
+.corner{animation:twinkle 2.8s ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:.45;transform:rotate(8deg) scale(1)}50%{opacity:1;transform:rotate(-4deg) scale(1.12)}}
+.floating-petal{
+  position:fixed;z-index:4;pointer-events:none;font-size:18px;color:#b95e6b;
+  animation:petalFall linear forwards;
+}
+@keyframes petalFall{
+  0%{opacity:0;transform:translate3d(0,-20px,0) rotate(0)}
+  12%{opacity:.8}
+  50%{transform:translate3d(45px,50vh,0) rotate(150deg)}
+  100%{opacity:0;transform:translate3d(-35px,110vh,0) rotate(320deg)}
+}
+.envelope{
+  transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s;
+}
+.envelope:hover{transform:translateY(-7px) rotate(-1deg) scale(1.025)}
+.envelope.opening{animation:envelopeOpen .9s ease both}
+@keyframes envelopeOpen{
+  0%{transform:translateY(0) rotate(0) scale(1)}
+  40%{transform:translateY(-10px) rotate(-2deg) scale(1.04)}
+  70%{transform:translateY(0) rotate(1deg) scale(.98)}
+  100%{transform:translateY(0) rotate(0) scale(1)}
+}
+.heart{animation:heartPop 1s cubic-bezier(.17,.89,.32,1.25) both}
+@keyframes heartPop{
+  0%{opacity:0;transform:scale(.2) rotate(-12deg)}
+  65%{opacity:1;transform:scale(1.18) rotate(4deg)}
+  100%{transform:scale(1) rotate(0)}
+}
+.celebrate .mini-flower{animation:bloom .65s cubic-bezier(.2,.8,.2,1) both}
+.celebrate .mini-flower:nth-child(2){animation-delay:.12s}
+.celebrate .mini-flower:nth-child(3){animation-delay:.24s}
+@keyframes bloom{
+  from{opacity:0;transform:scale(.2) rotate(-30deg)}
+  to{opacity:1;transform:scale(1) rotate(0)}
+}
+.yes-heart{
+  position:fixed;z-index:50;pointer-events:none;font-size:22px;
+  animation:floatHeart 1.7s ease-out forwards;
+}
+@keyframes floatHeart{
+  from{opacity:1;transform:translate3d(0,0,0) scale(.7) rotate(0)}
+  to{opacity:0;transform:translate3d(var(--dx),-180px,0) scale(1.25) rotate(var(--rot))}
+}
+.flash{
+  position:fixed;inset:0;background:#fffaf3;z-index:100;pointer-events:none;
+  animation:flash .55s ease-out forwards;
+}
+@keyframes flash{from{opacity:.7}to{opacity:0}}
+@media(prefers-reduced-motion:reduce){
+  .screen.active,.screen.leaving,.kicker,h1,h2,p,.note,.memory,.actions,.footer-note,.gys,.heart,.flower-row,.envelope-area,
+  .flower,.corner,.answer-grid .primary,.celebrate .mini-flower{animation:none!important}
+}
+
+
+/* ===== Shivani's little world / mini-game ===== */
+.little-world{align-items:center;text-align:center}
+.little-world>p{margin-left:auto;margin-right:auto}
+.world-board{
+  width:min(760px,100%);margin:22px auto 10px;padding:18px;
+  border:1px solid var(--line);background:#f3eadf;border-radius:12px;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.45),0 10px 28px rgba(80,55,40,.06)
+}
+.world-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.world-card{
+  min-height:142px;border:1px solid #d5c6b5;background:#fffaf3;border-radius:10px;
+  color:var(--ink);cursor:pointer;padding:15px 10px;position:relative;overflow:hidden;
+  transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease;background-color .3s ease
+}
+.world-card:hover{transform:translateY(-6px) rotate(-1deg);box-shadow:0 12px 22px rgba(75,50,40,.10);border-color:#c4aa94}
+.world-card:nth-child(even):hover{transform:translateY(-6px) rotate(1deg)}
+.world-card.active{border-color:var(--rose);background:#fff5f2;box-shadow:0 10px 24px rgba(169,77,93,.12)}
+.world-icon{height:67px;display:grid;place-items:center;font-size:39px;line-height:1;transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+.world-card:hover .world-icon{transform:translateY(-4px) scale(1.08) rotate(-4deg)}
+.world-card strong{display:block;font-size:15px}.world-card small{display:block;color:var(--muted);font-size:11px;margin-top:5px}
+.world-card.travel .world-icon{animation:floatPlane 2.8s ease-in-out infinite}
+@keyframes floatPlane{0%,100%{transform:translate(-2px,2px) rotate(-5deg)}50%{transform:translate(5px,-6px) rotate(5deg)}}
+.world-card.food .world-icon{animation:foodBounce 2.1s ease-in-out infinite}
+@keyframes foodBounce{0%,100%{transform:rotate(-3deg)}50%{transform:translateY(-5px) rotate(4deg)}}
+.world-card.sleep .world-icon{animation:sleepBob 3.2s ease-in-out infinite}
+@keyframes sleepBob{0%,100%{transform:translateY(1px)}50%{transform:translateY(-5px)}}
+.world-card.reels .world-icon{animation:phoneTilt 2.4s ease-in-out infinite}
+@keyframes phoneTilt{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
+.world-stage{min-height:116px;margin-top:15px;padding:17px;border-top:1px dashed #cdbdaa;display:flex;flex-direction:column;align-items:stretch;justify-content:center;position:relative;overflow:hidden}
+.stage-message{font-size:15px;color:#5c534d;line-height:1.55;animation:stageIn .45s ease both}
+@keyframes stageIn{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
+.travel-scene{width:100%;position:relative;height:82px;overflow:hidden;background:#e9dfd2;border:1px solid #d5c7b7;border-radius:9px}
+.travel-sun{position:absolute;right:12%;top:12px;width:27px;height:27px;border-radius:50%;background:#e1b878}
+.travel-road{position:absolute;left:0;right:0;bottom:15px;border-bottom:2px dashed #aa9a88}
+.travel-plane{position:absolute;left:-45px;top:29px;font-size:28px;animation:flyAcross 2.2s cubic-bezier(.2,.7,.2,1) forwards}
+@keyframes flyAcross{0%{left:-45px;transform:rotate(-5deg)}45%{top:18px}100%{left:calc(100% + 10px);top:28px;transform:rotate(7deg)}}
+.travel-dot{position:absolute;width:7px;height:7px;border-radius:50%;background:var(--rose);bottom:11px;animation:routeDot 1.8s ease both}.travel-route{position:absolute;right:24%;top:24px;font-size:25px;transition:transform .3s ease}.travel-cloud{position:absolute;left:12%;top:15px;font-size:18px}.food-target{transition:left .35s ease,top .35s ease,transform .2s ease}.food-target.food-caught{transform:scale(1.18) rotate(8deg)}
+@keyframes routeDot{from{transform:scale(.2);opacity:0}to{transform:scale(1);opacity:1}}
+.food-scene{display:flex;align-items:center;justify-content:center;gap:14px;min-height:82px}
+.food-wheel{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;background:#f2ddc7;border:2px dashed #bca58e;font-size:33px;animation:foodSpin .9s ease both}
+@keyframes foodSpin{from{transform:rotate(-180deg) scale(.6)}to{transform:rotate(0) scale(1)}}
+.food-copy{text-align:left}.food-copy strong{display:block;font-size:16px}.food-copy span{font-size:12px;color:var(--muted)}
+.travel-game{position:relative;width:100%;height:130px;overflow:hidden;background:#e9dfd2;border:1px solid #d5c7b7;border-radius:14px}.travel-game .game-sky{position:absolute;inset:0;background:#eee5d8}.travel-game .game-plane{position:absolute;left:18%;top:48px;font-size:34px;border:0;background:none;cursor:pointer;transition:left .45s ease,transform .25s ease;z-index:10;pointer-events:auto}.travel-game .game-plane.plane-clicked{transform:translateY(-10px) rotate(7deg)}.travel-game .destination{position:absolute;right:15px;bottom:12px;font-size:12px;color:var(--muted)}.game-hint{font-size:12px;color:var(--muted);margin-top:7px}.food-game{position:relative;width:100%;height:145px;overflow:hidden;background:#f4eadc;border:1px solid #d5c7b7;border-radius:14px}.food-target{position:absolute;left:20px;top:50px;border:0;background:#fffaf3;border-radius:50%;width:58px;height:58px;font-size:29px;cursor:pointer;box-shadow:0 5px 12px rgba(60,45,35,.12);z-index:10;pointer-events:auto;animation:foodMove 2.1s ease-in-out infinite alternate}.food-score{position:absolute;right:12px;top:10px;font-weight:800;font-size:12px;color:var(--rose-dark)}.reels-game{height:155px;position:relative;overflow:hidden;background:#efe4d8;border:1px solid #d5c7b7;border-radius:14px;display:flex;align-items:center;justify-content:center}.swipe-phone{width:120px;height:135px;background:#fffaf3;border:2px solid #cdbbaa;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;box-shadow:0 8px 18px rgba(60,45,35,.1);cursor:pointer;touch-action:pan-y}.swipe-phone .reel-big{font-size:40px}.swipe-phone.swiped{animation:reelSwipe .45s ease both}.reel-caption{font-size:11px;color:var(--muted);text-align:center;padding:0 10px}.mini-complete{font-weight:800;color:var(--rose-dark);animation:completePop .45s ease both}@keyframes planeHop{0%,100%{transform:translate(0,0) rotate(-4deg)}50%{transform:translate(35px,-10px) rotate(5deg)}}@keyframes foodMove{from{left:18px;top:52px}to{left:calc(100% - 76px);top:66px}}@keyframes reelSwipe{0%{transform:translateX(0) rotate(0)}100%{transform:translateX(180px) rotate(14deg);opacity:0}}@keyframes completePop{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+.sleep-scene{position:relative;width:180px;height:82px;border-radius:45px;background:#3d3a45;border:1px solid #625d68;overflow:hidden;display:grid;place-items:center}
+.sleep-game{position:relative;width:min(100%,360px);min-height:150px;border-radius:24px;background:#3d3a45;border:1px solid #625d68;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;overflow:hidden}.sleep-game .alarm-face{font-size:42px;animation:alarmShake .22s linear infinite}.sleep-game .snooze-btn{border:0;border-radius:999px;padding:10px 22px;background:#fffaf3;color:#302a28;font-weight:800;cursor:pointer;box-shadow:0 5px 0 rgba(0,0,0,.15);transition:transform .15s ease}.sleep-game .snooze-btn:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(0,0,0,.15)}@keyframes alarmShake{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+.sleep-moon{font-size:34px;animation:moonFloat 1.3s ease both}.sleep-z{position:absolute;color:#f4dfc1;font-weight:700;animation:zFloat 1.6s ease-out forwards}.z1{right:27px;top:13px}.z2{right:49px;top:33px;animation-delay:.18s}.z3{right:73px;top:15px;animation-delay:.36s}
+@keyframes moonFloat{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}@keyframes zFloat{from{opacity:0;transform:translateY(9px) scale(.7)}to{opacity:1;transform:translateY(-15px) scale(1)}}
+.reels-scene{display:flex;align-items:center;justify-content:center;gap:10px;height:88px;overflow:hidden}
+.reel-card{width:76px;height:78px;border-radius:9px;border:1px solid #d0c0ae;background:#fffaf3;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;color:var(--muted);box-shadow:0 4px 9px rgba(60,45,35,.07)}
+.reel-card.center{height:88px;background:#f5e2df;color:var(--rose-dark);transform:scale(1.06);font-weight:700}
+.reel-card.swipe{animation:swipeReel .8s ease both}
+@keyframes swipeReel{from{transform:translateX(85px) rotate(5deg);opacity:0}to{transform:translateX(0) rotate(0);opacity:1}}
+.world-score{font-size:12px;color:var(--muted);margin-top:11px}.world-score b{color:var(--rose)}
+.game-complete{animation:gameComplete .55s ease both}
+@keyframes gameComplete{0%{transform:scale(.96);opacity:.2}65%{transform:scale(1.02)}100%{transform:scale(1);opacity:1}}
+@media(max-width:640px){
+  .world-grid{grid-template-columns:1fr 1fr}
+  .world-card{min-height:125px}
+}
+
+@media(max-width:640px){
+  .wrap{padding:12px}
+  .screen{min-height:calc(100vh - 24px);padding:58px 24px 28px}
+  .flower{transform:scale(.65)!important}
+  .flower.tl{left:-15px;top:-12px}.flower.br{right:-18px;bottom:-10px}
+  .memory{grid-template-columns:1fr}
+  .actions,.answer-grid{flex-direction:column}
+  .btn{width:100%}
+  .envelope{width:205px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<div class="site">
+  <div class="flower tl" aria-hidden="true"><i class="petal p1"></i><i class="petal p2"></i><i class="petal p3"></i><i class="petal p4"></i><i class="petal p5"></i><i class="petal p6"></i><i class="petal p7"></i><i class="petal p8"></i><i class="center"></i></div>
+  <div class="flower br" aria-hidden="true"><i class="petal p1"></i><i class="petal p2"></i><i class="petal p3"></i><i class="petal p4"></i><i class="petal p5"></i><i class="petal p6"></i><i class="petal p7"></i><i class="petal p8"></i><i class="center"></i></div>
+
+  <main class="wrap" aria-live="polite">
+    <section class="screen active" id="s1">
+      
+      <h1>🦋Hey Shivani Ma'am,</h1>
+      
+      <div class="note">
+        <p style="margin:0">👉👈I have a small question for you.</p>
+        <p class="small" style="margin:8px 0 0">And yes, I probably could've just asked you normally... but apparently I decided to ask u dramatically..... </p>
+      </div>
+      <div class="actions"><button class="btn primary" onclick="goTo(2)">Okay, show me →</button></div>
+      <div class="footer-note">Don't worry, this won't take long. hopefully :)</div>
+    </section>
+
+    <section class="screen" id="s2">
+      <div class="kicker">a little throwback</div>
+      <h2>Remember Freshers' Meet..? 👀</h2>
+      <p>There was music, a lot of people, and somehow... we ended up doing salsa together.</p>
+      <div class="memory">
+        <div class="ticket"><span>1st Freshers' Meet</span><strong>Task + people</strong></div>
+        <div class="ticket"><span>one random memory</span><strong>Salsa 💃</strong></div>
+      </div>
+      <p>We haven't talked a huge amount since then, but honestly, that was a pretty nice memory.</p>
+      <p class="script">So yeah... I still remember it. :)</p>
+      <div class="actions"><button class="btn primary" onclick="goTo(3)">I remember 😄 →</button></div>
+    </section>
+
+    <section class="screen" id="s3">
+      
+      <h2>And that brings me here...</h2>
+      <p>So I thought, why not make another memory?</p>
+      <p>We haven't really talked that much since Freshers' Meet, but I thought I'd take a small chance and ask you something.</p>
+      <div class="note">
+        <p style="margin:0">Nothing complicated.<br>Nothing serious.</p>
+        <p class="small" style="margin:9px 0 0">Just one question that I've probably overthought way more than necessary. 😂</p>
+      </div>
+      <div class="actions"><button class="btn primary" onclick="goTo(4)">Ask me →</button></div>
+    </section>
+
+    <section class="screen little-world" id="s4">
+      <div class="kicker">before the serious question...</div>
+      <h2>Welcome to Shivani's mam little world. ✈️</h2>
+      <p>I thought we needed a tiny game first. </p>
+      <p class="small">Pick something that feels very <em>you</em>. Tap the cards — they actually do something.</p>
+
+      <div class="world-board">
+        <div class="world-grid">
+          <button class="world-card travel" onclick="playWorld('travel',this)">
+            <span class="world-icon">✈️</span><strong>Travel</strong><small>where to next?</small>
+          </button>
+          <button class="world-card food" onclick="playWorld('food',this)">
+            <span class="world-icon">🍜</span><strong>New Food</strong><small>try something new</small>
+          </button>
+          <button class="world-card sleep" onclick="playWorld('sleep',this)">
+            <span class="world-icon">🌙</span><strong>Sleep</strong><small>do not disturb 😴</small>
+          </button>
+          <button class="world-card reels" onclick="playWorld('reels',this)">
+            <span class="world-icon">📱</span><strong>Reels</strong><small>just one more...</small>
+          </button>
+        </div>
+        <div class="world-stage" id="worldStage" aria-live="polite">
+          <div class="stage-message">Your mission: discover all four. 🎮</div>
+        </div>
+        <div class="world-score">Mini-game progress: <b id="worldScore">0 / 4</b></div>
+      </div>
+
+      <div class="actions">
+        <button class="btn primary" onclick="goTo(5)">Okay, now ask the question →</button>
+      </div>
+    </section>
+
+    <section class="screen question" id="s5">
+      <div class="kicker">okay... here goes</div>
+      
+      <h2>Shivani Ma'am...<br>Will you be my GYS? 🤌</h2>
+      <p>No complicated application.<br>No interview.<br>No entrance exam. </p>
+      <p class="small">Just one simple question or 💐request.<br><br>🫠Choose honestly. No pressure, promise. :)</p>
+      <div class="answer-grid">
+        <button class="btn primary" onclick="yesAnswer()">YES, I'll be your GYS! 💞</button>
+        <button class="btn" onclick="noAnswer()">NO, sorry 🥲</button>
+      </div>
+    </section>
+
+    <section class="screen" id="s6">
+      <div class="kicker">wait...</div>
+      <h2>Already? 😭</h2>
+      <p>I thought we were off to a pretty good start.</p>
+      <div class="note">
+        <p style="margin:0">Freshers' Meet.<br>Salsa..</p>
+        <p class="small" style="margin:9px 0 0">🫠And now this... </p>
+      </div>
+      <p>Maybe give it one more thought?</p>
+      <div class="actions">
+        <button class="btn primary" onclick="goTo(5)">I'll reconsider 👀</button>
+        <button class="btn" onclick="goTo(7)">Still NO 😭</button>
+      </div>
+    </section>
+
+    <section class="screen" id="s7">
+      <div class="kicker">okay, okay...</div>
+      <h2>🫠I respect the decision. </h2>
+      <p>But honestly... I had to try once more. </p>
+      <div class="note">
+        <p style="margin:0">No pressure, Ma'am.</p>
+        <p class="small" style="margin:9px 0 0">Just one hopeful me asking one very important question.</p>
+      </div>
+      <p>Last chance. I promise this is actually the last one. :)</p>
+      <div class="actions">
+        <button class="btn primary" onclick="goTo(5)">Final reconsideration 👀</button>
+        <button class="btn" onclick="goTo(8)">Final answer →</button>
+      </div>
+    </section>
+
+    <section class="screen" id="s8">
+      <div class="kicker">fair enough</div>
+      <h2>🥲I respectfully accepts defeat. </h2>
+      <p>At least I can say... I asked. </p>
+      <div class="note">
+        <p style="margin:0">And hey — that Freshers' Meet salsa is still a pretty good memory.</p>
+      </div>
+      <p>No awkwardness. No pressure.<br>Just questions from my side . :)</p>
+      <div class="actions"><button class="btn" onclick="restart()">Back to the beginning ↩</button></div>
+    </section>
+
+    <section class="screen celebrate" id="s9">
+      <div class="heart" aria-hidden="true">💞</div>
+      <div class="kicker">wait—</div>
+      <h2>You said YES. 😭</h2>
+      <div class="flower-row" aria-hidden="true"><i class="mini-flower"></i><i class="mini-flower"></i><i class="mini-flower"></i></div>
+      <p>Okay... I'm genuinely really happy you said yes. :)</p>
+      <div class="envelope-area"><div class="envelope" role="button" tabindex="0" aria-label="Open the little envelope"></div></div>
+      <p class="small">Thank You So much mam.<br>I can't believe u said yes.</p>
+      <div class="actions"><button class="btn primary" onclick="goTo(10)">Continue →</button></div>
+    </section>
+
+    <section class="screen celebrate" id="s10">
+      <div class="kicker">so... it's official</div>
+      <h2>💞So... it's a YES. </h2>
+      <p>From a random salsa 💃 at Freshers' Meet...</p>
+      <p>...to becoming my GYS.</p>
+      <p class="script">I think that's actually a pretty good beginning.</p>
+      <div class="note" style="text-align:left">
+        <p style="margin:0">🫶🏻Thank you for saying yes, Shivani Mam</p>
+        <p class="small" style="margin:10px 0 0">— Rahul</p>
+      </div>
+      <div class="actions"><button class="btn" onclick="restart()">Replay ↻</button></div>
+      <div class="footer-note">Made with a little courage.<br>And way too much overthinking. 😂</div>
+    </section>
+  </main>
+</div>
+<script>
+let current=1;
+let transitioning=false;
+
+function burstHearts(){
+  for(let i=0;i<12;i++){
+    const h=document.createElement("span");
+    h.className="yes-heart";
+    h.textContent=["♥","♡","❤","✿"][Math.floor(Math.random()*4)];
+    h.style.left=(45+Math.random()*10)+"vw";
+    h.style.top=(48+Math.random()*12)+"vh";
+    h.style.setProperty("--dx",((Math.random()-.5)*260)+"px");
+    h.style.setProperty("--rot",((Math.random()-.5)*90)+"deg");
+    h.style.animationDelay=(Math.random()*.25)+"s";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),2100);
+  }
+}
+
+function flashPage(){
+  const f=document.createElement("div");
+  f.className="flash";
+  document.body.appendChild(f);
+  setTimeout(()=>f.remove(),600);
+}
+
+function goTo(n){
+  if(transitioning || n===current)return;
+  const old=document.getElementById("s"+current);
+  const next=document.getElementById("s"+n);
+  if(!next)return;
+
+  transitioning=true;
+  old.classList.add("leaving");
+
+  setTimeout(()=>{
+    old.classList.remove("active","leaving");
+    next.classList.add("active");
+    current=n;
+    window.scrollTo({top:0,behavior:"smooth"});
+    setTimeout(()=>transitioning=false,180);
+  },260);
+}
+
+function yesAnswer(){
+  flashPage();
+  burstHearts();
+  goTo(9);
+}
+function noAnswer(){goTo(6)}
+function restart(){goTo(1)}
+
+function openEnvelope(){
+  const env=document.querySelector(".envelope");
+  if(env) env.classList.add("opening");
+  setTimeout(()=>goTo(10),520);
+}
+document.addEventListener("click",e=>{
+  if(e.target.closest(".envelope")) openEnvelope();
+});
+document.addEventListener("keydown",e=>{
+  const env=e.target.closest?.(".envelope");
+  if(env && (e.key==="Enter" || e.key===" ")){
+    e.preventDefault();
+    openEnvelope();
+  }
+});
+
+
+const worldSeen=new Set();
+let alarmCtx=null;
+let alarmTimer=null;
+function startAlarm(){
+  stopAlarm();
+  try{
+    alarmCtx=new (window.AudioContext||window.webkitAudioContext)();
+    const beep=()=>{
+      if(!alarmCtx) return;
+      const now=alarmCtx.currentTime;
+      const osc=alarmCtx.createOscillator();
+      const gain=alarmCtx.createGain();
+      osc.type='square';
+      osc.frequency.setValueAtTime(880,now);
+      osc.frequency.setValueAtTime(660,now+0.16);
+      gain.gain.setValueAtTime(0.0001,now);
+      gain.gain.exponentialRampToValueAtTime(0.12,now+0.015);
+      gain.gain.exponentialRampToValueAtTime(0.0001,now+0.28);
+      osc.connect(gain).connect(alarmCtx.destination);
+      osc.start(now);
+      osc.stop(now+0.3);
+    };
+    beep();
+    alarmTimer=setInterval(beep,700);
+  }catch(err){ console.log('Alarm sound unavailable:',err); }
+}
+function stopAlarm(){
+  if(alarmTimer){clearInterval(alarmTimer);alarmTimer=null;}
+  if(alarmCtx){alarmCtx.close().catch(()=>{});alarmCtx=null;}
+}
+function snoozeAlarm(e){
+  e.stopPropagation();
+  stopAlarm();
+  const text=document.getElementById('alarmText');
+  if(text) text.textContent='ALARM DEFEATED 😴❤️';
+  worldSeen.add('sleep');
+  document.getElementById('worldScore').textContent=worldSeen.size+' / 4';
+  const stage=document.getElementById('worldStage');
+  stage.classList.remove('game-complete'); void stage.offsetWidth; stage.classList.add('game-complete');
+}
+const foodOptions=[
+  ['🍜','Noodles'],['🍕','Pizza'],['🍣','Sushi'],['🥟','Something new'],['🍰','Dessert'],['🌮','Street food']
+];
+const reelOptions=[
+  ['😂','funny reel'],['🍜','food reel'],['✈️','travel reel'],['🐱','cat reel'],['👀','one-more-reel']
+];
+const hobbyProgress={travel:0,food:0,reels:0};
+function completeHobby(kind){
+  if(worldSeen.has(kind)) return;
+  worldSeen.add(kind);
+  document.getElementById('worldScore').textContent=worldSeen.size+' / 4';
+  const stage=document.getElementById('worldStage');
+  stage.classList.remove('game-complete'); void stage.offsetWidth; stage.classList.add('game-complete');
+}
+function travelTap(e){
+  if(e) e.stopPropagation();
+  hobbyProgress.travel++;
+  const plane=document.getElementById('travelPlane');
+  const hint=document.getElementById('travelHint');
+  const route=document.getElementById('travelRoute');
+  const count=Math.min(hobbyProgress.travel,3);
+  if(plane){
+    plane.classList.remove('plane-clicked'); void plane.offsetWidth; plane.classList.add('plane-clicked');
+    plane.style.left = (18 + count*22) + '%';
+  }
+  if(route) route.textContent = ['🇮🇳','🏖️','🏔️','🗼'][count];
+  if(hint) hint.textContent=count<3?`Trip stop ${count}/3 — tap the plane again ✈️`:'TRIP COMPLETE ✈️❤️';
+  if(count>=3) completeHobby('travel');
+}
+function foodTap(e){
+  if(e) e.stopPropagation();
+  const target=document.getElementById('foodTarget');
+  const score=document.getElementById('foodMiniScore');
+  const hint=document.getElementById('foodHint');
+  if(!target || target.disabled) return;
+  hobbyProgress.food++;
+  const count=Math.min(hobbyProgress.food,3);
+  target.classList.remove('food-caught'); void target.offsetWidth; target.classList.add('food-caught');
+  if(score) score.textContent=`${count} / 3 caught`;
+  if(count>=3){
+    target.textContent='❤️'; target.disabled=true;
+    if(hint) hint.textContent='NEW FOOD ADVENTURE COMPLETE 🍜❤️';
+    completeHobby('food');
+    return;
+  }
+  const item=foodOptions[Math.floor(Math.random()*foodOptions.length)];
+  target.textContent=item[0];
+  target.style.left=(12+Math.random()*68)+'%';
+  target.style.top=(38+Math.random()*38)+'%';
+  if(hint) hint.textContent=`You found ${item[1]}! Catch one more 👀`;
+}
+function reelTap(e){
+  e.stopPropagation();
+  hobbyProgress.reels++;
+  const phone=e.currentTarget;
+  phone.classList.remove('swiped'); void phone.offsetWidth; phone.classList.add('swiped');
+  const count=Math.min(hobbyProgress.reels,3);
+  const hint=document.getElementById('reelHint');
+  if(hint) hint.textContent=count<3?`Swipe ${3-count} more time${3-count===1?'':'s'} 📱`:'REELS DEFEATED. Go outside. 😂❤️';
+  if(count>=3) completeHobby('reels');
+  setTimeout(()=>{
+    if(!phone.isConnected) return;
+    const item=reelOptions[Math.floor(Math.random()*reelOptions.length)];
+    phone.classList.remove('swiped');
+    phone.innerHTML=`<div class="reel-big">${item[0]}</div><strong>${item[1]}</strong><div class="reel-caption">"just one more" — famous last words</div>`;
+  },450);
+}
+function playWorld(kind,button){
+  document.querySelectorAll('.world-card').forEach(c=>c.classList.remove('active'));
+  if(button) button.classList.add('active');
+  stopAlarm();
+  const stage=document.getElementById('worldStage');
+  if(!stage) return;
+
+  if(kind==='travel'){
+    hobbyProgress.travel=0;
+    stage.innerHTML=`<div class="travel-game"><div class="game-sky"></div><div class="travel-cloud">☁️</div><button id="travelPlane" class="game-plane" aria-label="Tap the airplane">✈️</button><span id="travelRoute" class="travel-route">🇮🇳</span><span class="destination">destination: somewhere new 🌍</span></div><div id="travelHint" class="game-hint">Tap the plane 3 times to start the trip ✈️</div>`;
+    document.getElementById('travelPlane').addEventListener('click',travelTap);
+  }else if(kind==='food'){
+    hobbyProgress.food=0;
+    const item=foodOptions[Math.floor(Math.random()*foodOptions.length)];
+    stage.innerHTML=`<div class="food-game"><div id="foodMiniScore" class="food-score">0 / 3 caught</div><button id="foodTarget" class="food-target" aria-label="Catch the food">${item[0]}</button></div><div id="foodHint" class="game-hint">Catch 3 new foods. First mission: ${item[1]} 🍜</div>`;
+    document.getElementById('foodTarget').addEventListener('click',foodTap);
+  }else if(kind==='sleep'){
+    stage.innerHTML=`<div class="sleep-game"><div class="alarm-face">⏰</div><strong id="alarmText">WAKE UP, SHIVANI 😭</strong><span style="color:#d8cfc7;font-size:13px">Okay... one more snooze.</span><button class="snooze-btn" onclick="snoozeAlarm(event)">SNOOZE 😴</button></div>`;
+    startAlarm();
+  }else if(kind==='reels'){
+    const item=reelOptions[Math.floor(Math.random()*reelOptions.length)];
+    stage.innerHTML=`<div class="reels-game"><button class="swipe-phone" aria-label="Swipe the reel"><div class="reel-big">${item[0]}</div><strong>${item[1]}</strong><div class="reel-caption">tap to swipe →</div></button></div><div id="reelHint" class="game-hint">Swipe 3 reels. Yes, "one more". 😂</div>`;
+    stage.querySelector('.swipe-phone').addEventListener('click',reelTap);
+  }
+  stage.classList.remove('game-complete'); void stage.offsetWidth; stage.classList.add('game-complete');
+}
+function createPetal(){
+  const p=document.createElement("span");
+  p.className="floating-petal";
+  p.textContent=Math.random()>.45?"✿":"♥";
+  p.style.left=(Math.random()*100)+"vw";
+  p.style.top="-25px";
+  p.style.animationDuration=(6+Math.random()*6)+"s";
+  p.style.fontSize=(12+Math.random()*13)+"px";
+  p.style.opacity=(.35+Math.random()*.45);
+  document.body.appendChild(p);
+  setTimeout(()=>p.remove(),13000);
+}
+setInterval(createPetal,1700);
+for(let i=0;i<4;i++) setTimeout(createPetal,i*700);
+
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape" && current!==1) restart();
+});
+</script>
+</body>
+</html>
